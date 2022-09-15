@@ -1,11 +1,8 @@
 from typing import Any, List
-
 import torch
 from pytorch_lightning import LightningModule
 from torchmetrics import MaxMetric, MeanMetric
 from torchmetrics.classification.accuracy import Accuracy
-
-
 class TIMMLitModule(LightningModule):
     def __init__(
         self, 
@@ -13,21 +10,16 @@ class TIMMLitModule(LightningModule):
         optimizer: torch.optim.Optimizer,
     ):
         super().__init__()
-
         # this line allows to access init params with 'self.hparams' attribute
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False, ignore=["net"])
-
         self.net = net
-
         # loss function
         self.criterion = torch.nn.CrossEntropyLoss()
-
         # metric objects for calculating and averaging accuracy across batches
         self.train_acc = Accuracy()
         self.val_acc = Accuracy()
         self.test_acc = Accuracy()
-
         # for averaging loss across batches
         self.train_loss = MeanMetric()
         self.val_loss = MeanMetric()
@@ -95,7 +87,6 @@ class TIMMLitModule(LightningModule):
         self.test_acc(preds, targets)
         self.log("test/loss", self.test_loss, on_step=False, on_epoch=True, prog_bar=True)
         self.log("test/acc", self.test_acc, on_step=False, on_epoch=True, prog_bar=True)
-
         return {"loss": loss, "preds": preds, "targets": targets}
 
     def test_epoch_end(self, outputs: List[Any]):
@@ -111,7 +102,6 @@ class TIMMLitModule(LightningModule):
         return {
             "optimizer": self.hparams.optimizer(params=self.parameters()),
         }
-
 
 if __name__ == "__main__":
     import hydra
