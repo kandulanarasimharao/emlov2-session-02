@@ -10,21 +10,26 @@ class TIMMLitModule(LightningModule):
         optimizer: torch.optim.Optimizer,
     ):
         super().__init__()
+        
         # this line allows to access init params with 'self.hparams' attribute
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False, ignore=["net"])
+        
         self.net = net
+        
         # loss function
         self.criterion = torch.nn.CrossEntropyLoss()
+        
         # metric objects for calculating and averaging accuracy across batches
         self.train_acc = Accuracy()
         self.val_acc = Accuracy()
         self.test_acc = Accuracy()
+
         # for averaging loss across batches
         self.train_loss = MeanMetric()
         self.val_loss = MeanMetric()
         self.test_loss = MeanMetric()
-
+        
         # for tracking best so far validation accuracy
         self.val_acc_best = MaxMetric()
 
