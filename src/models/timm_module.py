@@ -102,5 +102,5 @@ if __name__ == "__main__":
     import omegaconf
     import pyrootutils
     root = pyrootutils.setup_root(__file__, pythonpath=True)
-    cfg = omegaconf.OmegaConf.load(root / "configs" / "model" / "timm.yaml")
+    cfg = omegaconf.OmegaConf.load(root / "configs" / "model" / "timm.yaml")  
     _ = hydra.utils.instantiate(cfg)
