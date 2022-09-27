@@ -4,7 +4,7 @@ import torch
 from pytorch_lightning import LightningModule
 from torchmetrics import MaxMetric, MeanMetric
 from torchmetrics.classification.accuracy import Accuracy
-
+from pytorch_lightning.loggers import TensorBoardLogger
 
 class MNISTLitModule(LightningModule):
     """Example of LightningModule for MNIST classification.
@@ -31,7 +31,7 @@ class MNISTLitModule(LightningModule):
         # this line allows to access init params with 'self.hparams' attribute
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False, ignore=["net"])
-
+                
         self.net = net
 
         # loss function
@@ -48,7 +48,7 @@ class MNISTLitModule(LightningModule):
         self.test_loss = MeanMetric()
 
         # for tracking best so far validation accuracy
-        self.val_acc_best = MaxMetric()
+        self.val_acc_best = MaxMetric() 
 
     def forward(self, x: torch.Tensor):
         return self.net(x)
@@ -71,7 +71,7 @@ class MNISTLitModule(LightningModule):
         # update and log metrics
         self.train_loss(loss)
         self.train_acc(preds, targets)
-        self.log("train/loss", self.train_loss, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("train/loss", self.train_loss, on_step=True, on_epoch=True, prog_bar=True)
         self.log("train/acc", self.train_acc, on_step=False, on_epoch=True, prog_bar=True)
 
         # we can return here dict with any tensors
@@ -91,6 +91,9 @@ class MNISTLitModule(LightningModule):
         self.val_acc(preds, targets)
         self.log("val/loss", self.val_loss, on_step=False, on_epoch=True, prog_bar=True)
         self.log("val/acc", self.val_acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log('hp_metric',self.val_loss,on_step=False,on_epoch=True,prog_bar=True)
+        #logger = TensorBoardLogger("tb_logs", name="my_model")
+        #logger.log_hyperparams(self.hparams, {"hp_metric":self.val_loss})
 
         return {"loss": loss, "preds": preds, "targets": targets}
 
