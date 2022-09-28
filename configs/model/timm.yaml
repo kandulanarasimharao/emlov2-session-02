@@ -11,16 +11,8 @@ net:
   model_name: resnet18
   pretrained: True
   num_classes: 10
-<<<<<<< HEAD
-  input_size: 728
-  lin1_size: 64
-  lin2_size: 128
-  lin3_size: 64
-  output_size: 10
-=======
   #input_size: 784
   #lin1_size: 64
   #lin2_size: 128
   #lin3_size: 64
   #output_size: 10
->>>>>>> parent of 8d2dbfb (final)
