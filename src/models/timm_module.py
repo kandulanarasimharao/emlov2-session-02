@@ -1,18 +1,15 @@
 from typing import Any, List
-
 import torch
 from pytorch_lightning import LightningModule
 from torchmetrics import MaxMetric, MeanMetric
 from torchmetrics.classification.accuracy import Accuracy
-
-
 class TIMMLitModule(LightningModule):
     def __init__(
-        self,
+        self, 
         net: torch.nn.Module,
         optimizer: torch.optim.Optimizer,
     ):
-        super().__init__()
+        super().__init__()        
         # this line allows to access init params with 'self.hparams' attribute
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False, ignore=["net"])
@@ -100,12 +97,10 @@ class TIMMLitModule(LightningModule):
             "optimizer": self.hparams.optimizer(params=self.parameters()),
         }
 
-
 if __name__ == "__main__":
     import hydra
     import omegaconf
     import pyrootutils
-
     root = pyrootutils.setup_root(__file__, pythonpath=True)
-    cfg = omegaconf.OmegaConf.load(root / "configs" / "model" / "timm.yaml")
+    cfg = omegaconf.OmegaConf.load(root / "configs" / "model" / "timm.yaml")  
     _ = hydra.utils.instantiate(cfg)
