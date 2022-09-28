@@ -21,11 +21,7 @@ pyrootutils     # standardizing the project root setup
 pre-commit      # hooks for applying linters on commit
 rich            # beautiful text formatting in terminal
 pytest          # tests
-<<<<<<< HEAD
-# sh            # for running bash commands in some tests (linux/macos only)
 
+# sh            # for running bash commands in some tests (linux/macos only)
 #demo
 gradio==3.3.1
-=======
-# sh            # for running bash commands in some tests (linux/macos only)
->>>>>>> parent of 8d2dbfb (final)
