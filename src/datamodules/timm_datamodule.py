@@ -40,7 +40,7 @@ class CIFAR10DataModule(LightningDataModule):
         data_dir: str = "data/",
         train_val_test_split: Tuple[int, int, int] = (45_000, 5_000, 10_000),
         batch_size: int = 64,
-        num_workers: int = 16,
+        num_workers: int = 48,
         pin_memory: bool = False,
     ):
         super().__init__()
