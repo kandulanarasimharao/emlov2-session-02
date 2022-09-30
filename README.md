@@ -638,8 +638,8 @@ tags: ["mnist", "simple_dense_net"]
 seed: 12345
 
 trainer:
-  min_epochs: 5
-  max_epochs: 5
+  min_epochs: 1
+  max_epochs: 3
   gradient_clip_val: 0.5
 
 model:
