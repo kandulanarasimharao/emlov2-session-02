@@ -9,17 +9,18 @@ root = pyrootutils.setup_root(
 
 from typing import List, Tuple
 
-import torch
-import hydra
 import gradio as gr
+import hydra
+import torch
+import torch.nn.functional as F
+import torchvision.transforms as T
 from omegaconf import DictConfig
 from pytorch_lightning import LightningModule
-import torchvision.transforms as T
-import torch.nn.functional as F
 
 from src import utils
 
 log = utils.get_pylogger(__name__)
+
 
 def demo(cfg: DictConfig) -> Tuple[dict, dict]:
     """Demo function.
@@ -65,9 +66,11 @@ def demo(cfg: DictConfig) -> Tuple[dict, dict]:
 
     demo.launch()
 
+
 @hydra.main(version_base="1.2", config_path=root / "configs", config_name="demo.yaml")
 def main(cfg: DictConfig) -> None:
     demo(cfg)
+
 
 if __name__ == "__main__":
     main()

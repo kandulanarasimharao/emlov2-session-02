@@ -6,9 +6,10 @@ from torch.utils.data import ConcatDataset, DataLoader, Dataset, random_split
 from torchvision.datasets import CIFAR10
 from torchvision.transforms import transforms
 
+
 class CIFAR10DataModule(LightningDataModule):
     def __init__(
-        self, 
+        self,
         data_dir: str = "./",
         train_val_test_split: Tuple[int, int, int] = (45_000, 5_000, 10_000),
         batch_size: int = 64,
@@ -16,22 +17,22 @@ class CIFAR10DataModule(LightningDataModule):
         pin_memory: bool = False,
     ):
         super().__init__()
-        
+
         # this line allows to access init params with 'self.hparams' attribute
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False)
-        
-        #self.data_dir = data_dir
-        
+
+        # self.data_dir = data_dir
+
         self.transforms = transforms.Compose(
             [
-            transforms.Resize(224),
-            transforms.ToTensor(),
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+                transforms.Resize(224),
+                transforms.ToTensor(),
+                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
             ]
         )
         self.dims = (3, 32, 32)
-        #self.num_classes = 10
+        # self.num_classes = 10
 
         self.data_train: Optional[Dataset] = None
         self.data_val: Optional[Dataset] = None
@@ -56,6 +57,7 @@ class CIFAR10DataModule(LightningDataModule):
                 lengths=self.hparams.train_val_test_split,
                 generator=torch.Generator().manual_seed(42),
             )
+
     def train_dataloader(self):
         return DataLoader(
             dataset=self.data_train,
