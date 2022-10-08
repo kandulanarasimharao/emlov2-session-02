@@ -44,11 +44,11 @@ def demo(cfg: DictConfig) -> Tuple[dict, dict]:
         preds = preds[0].tolist()
         return {str(i): preds[i] for i in range(10)}
 
-    im = gr.Image(shape=(28, 28), image_mode="L", invert_colors=True, source="canvas")
+    #im = gr.Image(shape=(28, 28), image_mode="L", invert_colors=True, source="canvas")
 
     demo = gr.Interface(
         fn=recognize_digit,
-        inputs=[im],
+        inputs=gr.Image(type="pil"),
         outputs=[gr.Label(num_top_classes=10)],
         live=True,
     )
