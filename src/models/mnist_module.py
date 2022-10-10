@@ -58,9 +58,6 @@ class MNISTLitModule(LightningModule):
 
     def forward(self, x: torch.Tensor):
         return self.net(x)
-    
-    def forward(self, x: torch.Tensor):
-        return self.net(x)
 
     @torch.jit.export
     def forward_jit(self, x: torch.Tensor):

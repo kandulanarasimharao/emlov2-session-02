@@ -15,6 +15,11 @@ import gradio as gr
 from omegaconf import DictConfig
 
 from src import utils
+from PIL import Image
+from timm.data import resolve_data_config
+from timm.data.transforms_factory import create_transform
+import torchvision.transforms as transforms
+from typing import Dict
 
 log = utils.get_pylogger(__name__)
 
@@ -33,27 +38,35 @@ def demo(cfg: DictConfig) -> Tuple[dict, dict]:
 
     log.info(f"Instantiating scripted model <{cfg.ckpt_path}>")
     model = torch.jit.load(cfg.ckpt_path)
-
+    #print(model)
     log.info(f"Loaded Model: {model}")
 
-    def recognize_digit(image):
-        if image is None:
-            return None
-        image = torch.tensor(image[None, None, ...], dtype=torch.float32)
-        preds = model.forward_jit(image)
-        preds = preds[0].tolist()
-        return {str(i): preds[i] for i in range(10)}
-
-    #im = gr.Image(shape=(28, 28), image_mode="L", invert_colors=True, source="canvas")
+       
+    def predict(inp_img:Image):# -> Dict[str, float]:
+        img_tensor=transforms.ToTensor()(inp_img).unsqueeze(0).to(device="cuda")
+        #img_tensor=transform(inp_img).unsqeeze(0)
+        #print(img_tensor)
+        #transform = transforms.Compose([transforms.PILToTensor()])
+        #img_tensor = transform(inp_img)
+        with torch.no_grad():
+            out = model.forward_jit(img_tensor)
+        #print(out)
+        #    probabilities = torch.nn.functional.softmax(out[0], dim=0)
+        #    confidences = {categories[i]: float(probabilities[i]) for i in range(1000)}
+        #return confidences
+        return str(img_tensor.shape)
+    
+    
+    #im = gr.Image(shape=(32, 32),image_mode="L")
 
     demo = gr.Interface(
-        fn=recognize_digit,
-        inputs=gr.Image(type="pil"),
-        outputs=[gr.Label(num_top_classes=10)],
+        fn=predict,
+        #fn=
+        inputs=gr.Image(shape=(32, 32),image_mode="RGB"),
+        outputs="label",
+        #outputs=[gr.Label(num_top_classes=10)],
         live=True,
-    )
-
-    demo.launch()
+    ).launch(share=True)
 
 @hydra.main(
     version_base="1.2", config_path=root / "configs", config_name="demo_scripted.yaml"
