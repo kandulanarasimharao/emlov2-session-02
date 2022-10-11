@@ -2,8 +2,8 @@
 
 defaults:
   - _self_
-  - datamodule: mnist.yaml
-  - model: mnist.yaml # very important
+  - datamodule: cifar10.yaml
+  - model: timm.yaml # very important
   - callbacks: default.yaml
   - logger: null
   - trainer: default.yaml
@@ -15,4 +15,4 @@ defaults:
 task_name: "demo"
 
 # checkpoint is necessary for demo
-ckpt_path: ???
+ckpt_path: 
