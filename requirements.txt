@@ -24,4 +24,4 @@ pytest          # tests
 
 # sh            # for running bash commands in some tests (linux/macos only)
 #demo
-gradio==3.3.1
+gradio==3.17.0
